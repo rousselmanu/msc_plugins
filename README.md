@@ -13,10 +13,10 @@
 
 Note: Chord symbols are put in chord symbol text element (!), and the plugin can be run multiple times without texts fields being duplicated! (was not the case in other plugins)
 
-<h3>Examples:</h3>
+<h3>Example:</h3>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/example_standard.png"/>
 
-With "Jazz" style (go to "Style" menu):
+With "Jazz" style (go to "Style" menu):<br/>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/example_jazz.png"/>
 
 <h3>Installation:</h3>
@@ -30,7 +30,8 @@ More info: https://musescore.org/en/handbook/plugins
 <h3>Acknowledgment:</h3>
 I started this plugin as an improvement of the "Find Harmonies" plugin by Andresn
 	(https://github.com/andresn/standard-notation-experiments/tree/master/MuseScore/plugins/findharmonies)<br/>
-	itself being an enhanced version of "findharmony" by Merte (http://musescore.org/en/project/findharmony)<br/>
+	Itself being an enhanced version of "findharmony" by Merte (http://musescore.org/en/project/findharmony)<br/>
+	<br/>
 I took some lines of code or got inspiration from:
 - Berteh (https://github.com/berteh/musescore-chordsToNotes/)
 - Jon Ensminger (AddNoteNameNoteHeads v. 1.2 plugin)
