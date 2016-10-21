@@ -46,4 +46,4 @@ I took some lines of code or got inspiration from:
 Comments and feedbacks are welcome!<br/>
 Mail: <br/>
 <img height="20px" src="http://8p-tech.net/wp-content/uploads/email_nobg.png"/>
-Comments and feedbacks are welcome!<br/>
+<br/>

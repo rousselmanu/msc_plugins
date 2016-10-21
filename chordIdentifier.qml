@@ -29,7 +29,7 @@ import MuseScore 1.0
 
 MuseScore {
 
-    version: "1.0";
+    version: "1.1";
     description: "- Identify chords and put chord symbol on top.\n" +
                  "- Works with single or multiple voices, accross one or more staves.\n" +
                  "- Inversions are mentionned.\n" +
@@ -48,6 +48,20 @@ MuseScore {
     property variant green : "#00ff00"
     property variant blue : "#0000ff"
     
+    function getNoteName(note_tpc){ //get note name from TPC (Tonal Pitch Class):
+        var notename = "";
+        var tpc_str = ["Cbb","Gbb","Dbb","Abb","Ebb","Bbb",
+            "Fb","Cb","Gb","Db","Ab","Eb","Bb","F","C","G","D","A","E","B","F#","C#","G#","D#","A#","E#","B#",
+            "F##","C##","G##","D##","A##","E##","B##","Fbb"]; //tpc -1 is at number 34 (last item).
+        if(note_tpc != 'undefined' && note_tpc<=33){
+            if(note_tpc==-1) 
+                notename=tpc_str[34];
+            else
+                notename=tpc_str[note_tpc];
+        }
+        return notename;
+    }
+    
     function getChordName(chord) {
         var rootNote = null,
             inversion = null,
@@ -64,10 +78,6 @@ MuseScore {
                             [3,6,10]];   //dim7
         //... and associated notation:
         var chords_str = ["", "m", "\u00B0", "MM7", "m7", "Mm7", "\u00B07"];
-        //get note from TPC (Tonal Pitch Class):
-        var tpc_str = ["Cbb","Gbb","Dbb","Abb","Ebb","Bbb",
-            "Fb","Cb","Gb","Db","Ab","Eb","Bb","F","C","G","D","A","E","B","F#","C#","G#","D#","A#","E#","B#",
-            "F##","C##","G##","D##","A##","E##","B##","Fbb"]; //tpc -1 is at number 34 (last item).
 
         // ---------- SORT CHORD from bass to soprano --------
         chord.sort(function(a, b) { return (a.pitch) - (b.pitch); }); //bass note is now chord[0]
@@ -160,13 +170,7 @@ MuseScore {
             }*/
             
             // ----- find chord name:
-            var notename="";
-            if(chordRootNote.tpc != 'undefined' && chordRootNote.tpc<=33){
-                if(chordRootNote.tpc==-1) 
-                    notename=tpc_str[34];
-                else
-                    notename=tpc_str[chordRootNote.tpc];
-            }
+            var notename = getNoteName(chordRootNote.tpc);
             chordName = notename + chords_str[idx_chtype];
         }
 
@@ -202,6 +206,25 @@ MuseScore {
         }
         return null;
     } 
+    
+    function getAllCurrentNotes(cursor, startStaff, endStaff){
+        var full_chord = [];
+        var idx_note=0;
+        for (var staff = endStaff; staff >= startStaff; staff--) {
+            for (var voice = 3; voice >=0; voice--) {
+                cursor.staffIdx = staff;
+                cursor.voice = voice;
+                if (cursor.element && cursor.element.type == Element.CHORD) {
+                    var notes = cursor.element.notes;
+                    for (var i = 0; i < notes.length; i++) {
+                          full_chord[idx_note]=notes[i];
+                          idx_note++;
+                    }
+                }
+            }
+        }
+        return full_chord;
+    }
     
 
     onRun: {
@@ -251,32 +274,23 @@ MuseScore {
         if (fullScore) { // no selection
             cursor.rewind(0); // beginning of score
         }
-
+        var keySig = cursor.keySignature;
+        var keysig_name_major = getNoteName(keySig+7+7);
+        var keysig_name_minor = getNoteName(keySig+7+10);
+        console.log('keysig: ' + keySig + ' -> '+keysig_name_major+' major or '+keysig_name_minor+' minor.');
+        
         var segment;
+        var chordName = '';
         while ((segment=cursor.segment) && (fullScore || cursor.tick < endTick)) { //loop through the selection
-            
             // FIRST we get all notes on current position of the cursor, for all voices and all staves.
-            var full_chord = [];
-            var idx_note=0;
-            for (var staff = endStaff; staff >= startStaff; staff--) {
-                for (var voice = 3; voice >=0; voice--) {
-                    cursor.staffIdx = staff;
-                    cursor.voice = voice;
-                    if (cursor.element && cursor.element.type == Element.CHORD) {
-                        var notes = cursor.element.notes;
-                        for (var i = 0; i < notes.length; i++) {
-                              full_chord[idx_note]=notes[i];
-                              idx_note++;
-                        }
-                    }
-                }
-            }
-
-            if(idx_note!=0){ //More than 0 notes found!
+            var prev_full_chord = full_chord;
+            var full_chord = getAllCurrentNotes(cursor, startStaff, endStaff);
+            
+            if(full_chord.length!=0){ //More than 0 notes found!
                 console.log('------');
-                console.log('nb of notes found: ' + idx_note);
-                var chordName = getChordName(full_chord);
-
+                console.log('nb of notes found: ' + full_chord.length);
+                var prev_chordName = chordName;
+                chordName = getChordName(full_chord);
                 console.log('\tchordName: ' + chordName);
 
                 if (chordName !== '') { //chord has been identified
@@ -289,8 +303,12 @@ MuseScore {
                         harmony.text = chordName;
                         //console.log("text type:  " + staffText.type);
                         cursor.add(harmony);
-
                     }
+                    
+                    if(prev_chordName == chordName){// && isEqual(prev_full_chord, full_chord)){ //same chord as previous one ... remove text symbol
+                        harmony.text = '';
+                    }
+                    //console.log("xpos: "+harmony.pos.x+" ypos: "+harmony.pos.y);
                     /*staffText = newElement(Element.STAFF_TEXT);
                     staffText.text = chordName;
                     staffText.pos.x = 0;
@@ -300,6 +318,26 @@ MuseScore {
             
             cursor.next();
         } // end while segment
+        
+        if (fullScore) {
+            var key_str='';
+            if(chordName==keysig_name_major){   //if last chord of score is a I chord => we most probably found the key :-)
+                key_str=keysig_name_major+' major';
+            }else if(chordName==keysig_name_minor){
+                key_str=keysig_name_minor+' minor';
+            }else{
+                console.log('Key not found :-(');
+            }
+            if(key_str!=''){
+                console.log('FOUND KEY: '+key_str);
+                /*var staffText = newElement(Element.STAFF_TEXT);
+                staffText.text = key_str+':';
+                staffText.pos.x = -13;
+                staffText.pos.y = -1.5;
+                cursor.rewind(0);
+                cursor.add(staffText);*/
+            }
+        }
         Qt.quit();
     } // end onRun
 }
