@@ -18,6 +18,10 @@ Note: Chord symbols are put in chord symbol text element (!), and the plugin can
 
 With "Jazz" style (go to "Style" menu):<br/>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/example_jazz.png"/>
+<br/>
+
+From "Polonaise, op. 53 - Heroïc", F. Chopin:<br/>
+<img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/Example_ F._Chopin_Polonaise_in_A-flat_major_Op._53._Heroic.png"/>
 
 <h3>Installation:</h3>
 Plugins are for Musescore 2.0
@@ -39,5 +43,7 @@ I took some lines of code or got inspiration from:
 --> Thank you :-)
 
 
-Comments and feedbacks are welcome!
-mail: rousselmanu at gmail.com
+Comments and feedbacks are welcome!<br/>
+Mail: <br/>
+<img height="20px" src="http://8p-tech.net/wp-content/uploads/email_nobg.png"/>
+Comments and feedbacks are welcome!<br/>
