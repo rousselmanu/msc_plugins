@@ -63,10 +63,28 @@ MuseScore {
     }
     
     function getChordName(chord) {
+        var INVERSION_NOTATION = 2; //set to 0: inversions are not shown
+                                    //set to 1: inversions are noted with superscript 1, 2 or 3
+                                    //set to 2: figured bass notation is used instead
+                                
+        var DISPLAY_BASS_NOTE = 1; //set to 1: bass note is specified after a / like that: C/E for first inversion C chord.
+ 
+        //Standard notation for inversions:
+        if(INVERSION_NOTATION===1){
+            var inversions = ["", "\u00B9", "\u00B2"], // unicode for superscript "1", "2", "3" (e.g. to represent C Major first, or second inversion)
+                inversions_7th = ["7", "\u00B9", "\u00B2", "\u00B3"]; //inversions for 7ths chords
+        }else if(INVERSION_NOTATION===2){//Figured bass of inversions:
+            var inversions = ["", "\u2076", "\u2076\u2084"],
+                inversions_7th = ["\u2077", "\u2076\u2085", "\u2074\u2083", "\u2074\u2082"]; //inversions for 7ths chords
+        }else{
+            var inversions = ["", "", ""],
+                inversions_7th = ["", "", "", ""]; //inversions for 7ths chords
+        }
+            
         var rootNote = null,
             inversion = null,
-            inversions = ["", "\u00B9", "\u00B2", "\u00B3"], // unicode for superscript "1", "2", "3" (e.g. to represent C Major first, or second inversion)
             chordName = "";
+           
         
         // intervals (number of semitones from root note) for main chords types...
         var chords_type = [ [4,7],  //M
@@ -77,7 +95,8 @@ MuseScore {
                             [4,7,10],   //Mm7
                             [3,6,10]];   //dim7
         //... and associated notation:
-        var chords_str = ["", "m", "\u00B0", "MM7", "m7", "Mm7", "\u00B07"];
+        //var chords_str = ["", "m", "\u00B0", "MM7", "m7", "Mm7", "\u00B07"];
+        var chords_str = ["", "m", "\u00B0", "MM", "m", "Mm", "\u00B0"];
 
         // ---------- SORT CHORD from bass to soprano --------
         chord.sort(function(a, b) { return (a.pitch) - (b.pitch); }); //bass note is now chord[0]
@@ -172,6 +191,7 @@ MuseScore {
             // ----- find chord name:
             var notename = getNoteName(chordRootNote.tpc);
             chordName = notename + chords_str[idx_chtype];
+            
         }
 
         // ----- find inversion
@@ -188,7 +208,15 @@ MuseScore {
                 }
             }
             console.log('\t inv: ' + inv);
-            chordName += inversions[inv];
+            if(chords_type[idx_chtype].length<=2 && inv<=2){ //we have a triad:
+                chordName += inversions[inv];
+            }else{  //we have a 7th chord
+                chordName += inversions_7th[inv];
+            }
+            
+            if(DISPLAY_BASS_NOTE===1 && inv!==0){
+                chordName+="/"+getNoteName(chord[0].tpc);
+            }
         }
 
         return chordName;
