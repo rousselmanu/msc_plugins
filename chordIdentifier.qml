@@ -29,15 +29,14 @@ import MuseScore 1.0
 
 MuseScore {
 
-    version: "1.1";
+    version: "1.2";
     description: "- Identify chords and put chord symbol on top.\n" +
                  "- Works with single or multiple voices, accross one or more staves.\n" +
                  "- Inversions are mentionned.\n" +
-                 "- Notes are colored according to their function in the chord:\n" +
-                 "\t* Root in green\n\t* Third in brown\n\t* Seventh in red\n" +
+                 "- Notes are colored according to their function in the chord (NCTs stay in black)\n" +
                  "- Shows only chords used in classical music: triads (major, minor, diminished) and seventh chords (MM7, m7, Mm7, dim7)\n\n" +
                  "Comments, feedbacks, report bugs, ask for new features, contribute:\n" +
-                 "https://github.com/rousselmanu/msc_plugins";
+                 "https://musescore.org/en/project/chordidentifier";
     menuPath: "Plugins.Chords." + qsTr("Chord Identifier")
     
     property variant black : "#000000"
@@ -147,13 +146,13 @@ MuseScore {
         var chord_type = [ [4,7],  //M (0)
                             [3,7],  //m
                             [3,6],  //dim
-                            [4,7,11],   //MM7 (3)
-                            [3,7,10],   //m7
-                            [4,7,10],   //Mm7
-                            [3,6,10]];   //dim7 (6)
+                            [4,7,11],   //MM7 = Major Seventh
+                            [3,7,10],   //m7 = Minor Seventh
+                            [4,7,10],   //Mm7 = Dominant Seventh
+                            [3,6,10]];   //dim7 = Half Diminished Seventh
         //... and associated notation:
         //var chord_str = ["", "m", "\u00B0", "MM7", "m7", "Mm7", "\u00B07"];
-        var chord_str = ["", "m", "\u00B0", "MM", "m", "Mm", "\u00B0"];
+        var chord_str = ["", "m", "o", "MM", "m", "Mm", "o"];
         /*var chord_type_reduced = [ [4],  //M
                                     [3],  //m
                                     [4,11],   //MM7
