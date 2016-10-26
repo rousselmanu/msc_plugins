@@ -232,20 +232,28 @@ MuseScore {
             console.log('No chord found');
         }
             
-        var chordRootNote;
+        var regular_chord=[-1,-1,-1,-1]; //without NCTs
+        var bass=null; 
         var seventhchord=0;
         var chordName='';
         if (rootNote !== null) { // ----- the chord was identified
             for(i=0; i<chord.length; i++){  // ---- color notes and find root note
                 if((chord[i].pitch%12) === (rootNote%12)){  //color root note
-                    chordRootNote = chord[i];
+                    regular_chord[0] = chord[i];
                     chord[i].color = colorroot; 
+                    if(bass==null) bass=chord[i];
                 }else if((chord[i].pitch%12) === ((rootNote+chord_type[idx_chtype][0])%12)){ //third note
+                    regular_chord[1] = chord[i];
                     chord[i].color = color3rd; 
+                    if(bass==null) bass=chord[i];
                 }else if(chord_type[idx_chtype].length>=2 && (chord[i].pitch%12) === ((rootNote+chord_type[idx_chtype][1])%12)){ //5th
+                    regular_chord[2] = chord[i];
                     chord[i].color = color5th;
+                    if(bass==null) bass=chord[i];
                 }else if(chord_type[idx_chtype].length>=3 && (chord[i].pitch%12) === ((rootNote+chord_type[idx_chtype][2])%12)){ //7th
+                    regular_chord[3] = chord[i];
                     chord[i].color = color7th; 
+                    if(bass==null) bass=chord[i];
                     seventhchord=1;
                 }else{      //reset other note color 
                     chord[i].color = black; 
@@ -260,7 +268,7 @@ MuseScore {
             }*/
             
             // ----- find chord name:
-            var notename = getNoteName(chordRootNote.tpc);
+            var notename = getNoteName(regular_chord[0].tpc);
             chordName = notename + chord_str[idx_chtype];
             
         }
@@ -268,13 +276,13 @@ MuseScore {
         // ----- find inversion
         inv=-1;
         if (chordName !== ''){ // && inversion !== null) {
-            var bass_pitch=(chord[0].pitch%12);
+            var bass_pitch=bass.pitch%12;
             //console.log('bass_pitch: ' + bass_pitch);
             if(bass_pitch == rootNote){ //Is chord in root position ?
                 inv=0;
             }else{
-                for(var inv=1; inv<intervals[idx_rootpos].length+1; inv++){
-                   if(bass_pitch == ((rootNote+intervals[idx_rootpos][inv-1])%12)) break;
+                for(var inv=1; inv<chord_type[idx_chtype].length+1; inv++){
+                   if(bass_pitch == ((rootNote+chord_type[idx_chtype][inv-1])%12)) break;
                    //console.log('note n: ' + ((chord[idx_rootpos].pitch+intervals[idx_rootpos][inv-1])%12));
                 }
             }
@@ -285,8 +293,8 @@ MuseScore {
                 chordName += inversions_7th[inv];
             }
             
-            if(DISPLAY_BASS_NOTE===1 && inv!==0){
-                chordName+="/"+getNoteName(chord[0].tpc);
+            if(DISPLAY_BASS_NOTE===1 && inv>0){
+                chordName+="/"+getNoteName(bass.tpc);
             }
         }
 
