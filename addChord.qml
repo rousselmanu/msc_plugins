@@ -5,7 +5,7 @@ MuseScore {
     version: "1.0";
     description: "This demo plugin adds new chords\n\n" +
                  "Comments, feedbacks, report bugs, ask for new features, contribute:\n" +
-                 "https://musescore.org/en/project/chordidentifier";
+                 "https://github.com/rousselmanu/msc_plugins/";
     menuPath: "Plugins.Chords." + qsTr("Add Chord Demo")
     
     // ---------- remove duplicate notes from chord (notes with same pitch) --------
@@ -82,19 +82,29 @@ MuseScore {
     //adds chord at current position. chord_notes is an array with pitch of notes.
     function addChord(cursor, chord_notes, duration){ 
         if(chord_notes.length==0) return -1;
-        chord_notes=rm_dup(chord_notes);
+        if(chord_notes.length>1) chord_notes=rm_dup(chord_notes);
         var cur_time=cursor.tick;
         cursor.setDuration(1, duration);
         cursor.addNote(chord_notes[0]); //add 1st note
+        var next_time=cursor.tick;
         setCursorToTime(cursor, cur_time); //rewind to this note
         var chord = cursor.element; //get the chord created when 1st note was inserted
         for(var i=1; i<chord_notes.length; i++){
             chord.add(createNote(chord_notes[i])); //add notes to the chord
         }
-        cursor.next();
+        setCursorToTime(cursor, next_time);
         return 0;
     }
     
+    //note to pitch
+    function n2p(note, octave){
+        var notenames=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+        var pitch=notenames.indexOf(note);
+        if(pitch==-1) return -1;
+        pitch+=12*(octave+1);
+        //console.log('pitch: '+pitch);
+        return pitch;
+    }
 
     onRun: {
         if (typeof curScore === 'undefined') {
@@ -140,14 +150,19 @@ MuseScore {
         cursor.staffIdx = startStaff; //staff;
         cursor.track = 0;
         
-        
-        
         // ------------------ GENERATE CHORDS ----------------
-        addChord(cursor, [60, 64, 64, 67], 8);
+        addChord(cursor, [n2p('D',4)], 2);
+        addChord(cursor, [n2p('D',4), n2p('A',4), n2p('D',5), n2p('F',5)], 4);
+        addChord(cursor, [n2p('A#',3), n2p('D',4), n2p('G',4)], 4);
+        addChord(cursor, [n2p('A',3), n2p('G',4), n2p('C#',5)], 4);
+        addChord(cursor, [n2p('D',4), n2p('D',5), n2p('F',4), n2p('A',4)], 2);
+        addChord(cursor, [62], 1);
         
-        var chord2 = [62, 65, 69, 71];
-        addChord(cursor, chord2, 8);
-        addChord(cursor, chord2, 8);
+        addChord(cursor, [60, 65, 69, 72, 69], 8);
+        addChord(cursor, [60], 8);
+        var chord = [60, 64, 67];
+        addChord(cursor, shift_notes(chord,5), 8);
+        addChord(cursor, chord, 2);
         // ----------------------------------
 
 
