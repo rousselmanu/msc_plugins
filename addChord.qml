@@ -151,17 +151,17 @@ MuseScore {
         cursor.track = 0;
         
         // ------------------ GENERATE CHORDS ----------------
-        addChord(cursor, [n2p('D',4)], 2);
-        addChord(cursor, [n2p('D',4), n2p('A',4), n2p('D',5), n2p('F',5)], 4);
+        addChord(cursor, [n2p('D',4)], 2); //add a D4 note
+        addChord(cursor, [n2p('D',4), n2p('A',4), n2p('D',5), n2p('F',5)], 4); //add a Dm chord with 2 roots
         addChord(cursor, [n2p('A#',3), n2p('D',4), n2p('G',4)], 4);
         addChord(cursor, [n2p('A',3), n2p('G',4), n2p('C#',5)], 4);
         addChord(cursor, [n2p('D',4), n2p('D',5), n2p('F',4), n2p('A',4)], 2);
-        addChord(cursor, [62], 1);
+        addChord(cursor, [62], 1); //other method to add note: give the pitch
         
-        addChord(cursor, [60, 65, 69, 72, 69], 8);
+        addChord(cursor, [60, 65, 69, 72, 69], 8); //duplicate note is automatically removed
         addChord(cursor, [60], 8);
         var chord = [60, 64, 67];
-        addChord(cursor, shift_notes(chord,5), 8);
+        addChord(cursor, shift_notes(chord,5), 8); //shift the chord by 5 semi-tones
         addChord(cursor, chord, 2);
         // ----------------------------------
 
