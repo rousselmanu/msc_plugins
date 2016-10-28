@@ -271,6 +271,10 @@ MuseScore {
             var notename = getNoteName(regular_chord[0].tpc);
             chordName = notename + chord_str[idx_chtype];
             
+        }else{
+            for(i=0; i<chord.length; i++){
+                chord[i].color = black; 
+            }
         }
 
         // ----- find inversion
@@ -393,7 +397,7 @@ MuseScore {
             var prev_full_chord = full_chord;
             var full_chord = getAllCurrentNotes(cursor, startStaff, endStaff);
             
-            if(full_chord.length!=0){ //More than 0 notes found!
+            if(full_chord.length>0){ //More than 0 notes found!
                 console.log('------');
                 console.log('nb of notes found: ' + full_chord.length);
                 var prev_chordName = chordName;
