@@ -23,11 +23,12 @@ With "Jazz" style (go to "Style" menu):<br/>
 From "Polonaise, op. 53 - Heroïc", F. Chopin:<br/>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/Example_ F._Chopin_Polonaise_in_A-flat_major_Op._53._Heroic.png"/>
 
-<h3>Installation:</h3>
+<h3>HOW-TO:</h3>
 Plugins are for Musescore 2.0
-- Put the plugin (.qml) in the MuseScore/plugins folder (basically "C:/users/%USERNAME%/Documents/MuseScore2/Plugins" in Windows)
-- Restart MuseScore
-- Enable the plugin in "Plugin Manager" (you can also associate a shortcut)
+- [DOWNLOAD](https://github.com/rousselmanu/msc_plugins/archive/v1.2.zip) the last release.
+- Put the plugin (.qml) in the MuseScore/plugins folder (basically "C:/users/%USERNAME%/Documents/MuseScore2/Plugins" in Windows).
+- Restart MuseScore.
+- Enable the plugin in "Plugin Manager" (you can also associate a shortcut).
 
 More info: https://musescore.org/en/handbook/plugins
 
@@ -47,3 +48,4 @@ Comments and feedbacks are welcome!<br/>
 Mail: <br/>
 <img height="20px" src="http://8p-tech.net/wp-content/uploads/email_nobg.png"/>
 <br/>
+
