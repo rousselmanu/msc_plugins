@@ -148,7 +148,7 @@ MuseScore {
         }
         cursor.voice = 0;
         cursor.staffIdx = startStaff; //staff;
-        cursor.track = 0;
+        //cursor.track = 0;
         
         // ------------------ GENERATE CHORDS ----------------
         addChord(cursor, [n2p('D',4)], 2); //add a D4 note

@@ -20,11 +20,11 @@
 //  Thank you :-)
 //=============================================================================
 
-import QtQuick 2.3
-import QtQuick.Controls 1.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.3
+//import QtQuick 2.3
+//import QtQuick.Controls 1.2
+//import QtQuick.Dialogs 1.2
+//import QtQuick.Layouts 1.1
+//import QtQuick.Controls.Styles 1.3
 import MuseScore 1.0
 
 MuseScore {
@@ -323,8 +323,8 @@ MuseScore {
         var idx_note=0;
         for (var staff = endStaff; staff >= startStaff; staff--) {
             for (var voice = 3; voice >=0; voice--) {
-                cursor.staffIdx = staff;
                 cursor.voice = voice;
+                cursor.staffIdx = staff;
                 if (cursor.element && cursor.element.type == Element.CHORD) {
                     var notes = cursor.element.notes;
                     for (var i = 0; i < notes.length; i++) {
@@ -335,6 +335,48 @@ MuseScore {
             }
         }
         return full_chord;
+    }
+    
+    function setCursorToTime(cursor, time){
+        var cur_staff=cursor.staffIdx;
+        cursor.rewind(0);
+        cursor.staffIdx=cur_staff;
+        while (cursor.segment && cursor.tick < curScore.lastSegment.tick + 1) { 
+            var current_time = cursor.tick;
+            if(current_time>=time){
+                return true;
+            }
+            cursor.next();
+        }
+        cursor.rewind(0);
+        cursor.staffIdx=cur_staff;
+        return false;
+    }
+    
+    function next_note(cursor, startStaff, endStaff){
+        var cur_time=cursor.tick;
+        console.log('cur_time: ' + cur_time);
+        var next_time=-1;
+        var cur_staff=startStaff;
+        for (var staff = startStaff; staff <= endStaff; staff++) {
+            //for (var voice = 0; voice < 4; voice++) {
+                //cursor.voice=0;
+            cursor.staffIdx = staff;
+            setCursorToTime(cursor, cur_time);
+            cursor.next();
+            console.log('tick: ' + cursor.tick);
+            if((next_time<0 || cursor.tick<next_time) && cursor.tick !=0) {
+                next_time=cursor.tick;
+                cur_staff=staff;
+            }
+            //}
+        }
+        console.log('next_time: ' + next_time);
+        cursor.staffIdx = cur_staff;
+        //cursor.next();
+        if(next_time>0 && cursor.tick != next_time){
+            setCursorToTime(cursor, next_time);
+        }
     }
     
 
@@ -428,6 +470,7 @@ MuseScore {
             }
             
             cursor.next();
+            //next_note(cursor, startStaff, endStaff);
         } // end while segment
         
         if (fullScore) {
