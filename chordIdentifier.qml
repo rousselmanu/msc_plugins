@@ -30,14 +30,8 @@ import MuseScore 1.0
 MuseScore {
 
     version: "1.2";
-    description: "- Identify chords and put chord symbol on top.\n" +
-                 "- Works with single or multiple voices, accross one or more staves.\n" +
-                 "- Inversions are mentionned.\n" +
-                 "- Notes are colored according to their function in the chord (NCTs stay in black)\n" +
-                 "- Shows only chords used in classical music: triads (major, minor, diminished) and seventh chords (MM7, m7, Mm7, dim7)\n\n" +
-                 "Comments, feedbacks, report bugs, ask for new features, contribute:\n" +
-                 "https://musescore.org/en/project/chordidentifier";
-    menuPath: "Plugins.Chords." + qsTr("Chord Identifier")
+    description: "Identify chords and put chord symbol on top.\nWebsite: https://musescore.org/en/project/chordidentifier";
+    menuPath: "Plugins.Chords.Chord Identifier"
     
     property variant black : "#000000"
     property variant color7th : "#A00000"
