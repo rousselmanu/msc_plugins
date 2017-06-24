@@ -26,12 +26,13 @@
 //import QtQuick.Layouts 1.1
 //import QtQuick.Controls.Styles 1.3
 import MuseScore 1.0
+import QtQuick 2.0
 
 MuseScore {
 
-    version: "1.2";
-    description: "Identify chords and put chord symbol on top.\nWebsite: https://musescore.org/en/project/chordidentifier";
     menuPath: "Plugins.Chords.Chord Identifier"
+	description: "Identify chords and put chord symbol on top."
+    version: "1.2.2"
     
     property variant black : "#000000"
     property variant color7th : "#A00000"
