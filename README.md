@@ -1,6 +1,7 @@
-# Plugins for Musescore
+**DEPRECATED**: This version is no longer maintained. Try these excellent forks: [Chord Identifier Pop/Jazz](https://musescore.org/en/project/chord-identifier-pop-jazz), or [Chord Identifier Special V3](https://musescore.org/en/project/chord-identifier-special-v3).
+Thank you for enhancing my work!
 
-<h3>Chord Identifier Plugin:</h3>
+# Chord Identifier Plugin for Musescore
 - Identify chords and put chord symbol on top.
 - Works with single or multiple voices, accross one or more staves (like in sheet music for piano).
 - Inversions are indicated.
@@ -20,7 +21,7 @@ With "Jazz" style (go to "Style" menu):<br/>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/example_jazz.png"/>
 <br/>
 
-From "Polonaise, op. 53 - Heroïc", F. Chopin:<br/>
+From "Polonaise, op. 53 - HeroÃ¯c", F. Chopin:<br/>
 <img height="150px" src="https://raw.githubusercontent.com/rousselmanu/msc_plugins/master/Example_ F._Chopin_Polonaise_in_A-flat_major_Op._53._Heroic.png"/>
 
 <h3>HOW-TO:</h3>
